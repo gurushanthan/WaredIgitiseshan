@@ -470,9 +470,20 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
 .bg-layer video{width:100%; height:100%; object-fit:cover; display:block;}
 .bg-layer::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,18,36,0.25), rgba(255,255,255,0.02)); mix-blend-mode:normal;}
 
+/* try the real image first, then fall back to an elegant SVG placeholder */
+.bg-layer:nth-of-type(1){ background-image: url('assets/images/bg-warehouse-1.jpg'), url('assets/images/placeholder-1.svg'); }
+.bg-layer:nth-of-type(2){ background-image: url('assets/images/bg-warehouse-2.jpg'), url('assets/images/placeholder-2.svg'); }
+.bg-layer:nth-of-type(3){ background-image: url('assets/images/bg-warehouse-3.jpg'), url('assets/images/placeholder-3.svg'); }
+.bg-layer:nth-of-type(4){ background-image: url('assets/images/bg-warehouse-4.jpg'), url('assets/images/placeholder-4.svg'); }
+.bg-layer{background-repeat:no-repeat}
+
+/* animated SVG fallback used when video isn't available */
+.video-fallback{ position:absolute; inset:0; background-image: url('assets/videos/loop-fallback.svg'); background-size:cover; background-position:center; z-index:0; pointer-events:none; opacity:0; transition:opacity .6s ease-in-out; }
+
 @media (max-width:900px){
   /* Disable large video/heavy backgrounds on small screens for performance */
   .bg-layer.video, .bg-layer[data-type="video"]{display:none !important;}
+  .video-fallback{display:block !important;}
 }
 
 /* ---------- Ultra-polish UI styles ---------- */
@@ -1218,6 +1229,23 @@ if (contactForm) {
     });
   }
   attachRipples();
+  
+  // show / hide video fallback if real video not present
+  (function manageVideoFallback(){
+    const bgContainer = document.getElementById('bg-container');
+    const vLayer = bgContainer.querySelector('.video-layer');
+    const fallback = document.createElement('div');
+    fallback.className = 'video-fallback';
+    bgContainer.appendChild(fallback);
+    if(!vLayer) { fallback.style.opacity = '1'; return; }
+    const src = vLayer.getAttribute('data-src');
+    if(!src){ fallback.style.opacity = '1'; return; }
+    // try to load video via a short fetch HEAD to detect availability
+    fetch(src, { method: 'HEAD' }).then(res=>{
+      if(res.ok){ fallback.style.opacity = '0'; }
+      else{ fallback.style.opacity = '1'; }
+    }).catch(()=>{ fallback.style.opacity = '1'; });
+  })();
 })();
 </script>
 </body>
