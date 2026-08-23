@@ -490,7 +490,9 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
    Content (header, sections, footer) is stacked above this overlay. */
 #bg-container::after{
   content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(250,250,250,0.50));
+  background: linear-gradient(180deg, rgba(255,255,255,1), rgba(250,250,250,1));
+  opacity: var(--bg-overlay-opacity, 0.6);
+  transition: opacity 360ms cubic-bezier(.2,.9,.2,1);
 }
 
 /* Ensure page content paints above the overlay */
@@ -1311,6 +1313,57 @@ if (contactForm) {
     el.addEventListener('focus', ()=> el.style.transform='translateY(-6px) scale(1.02)');
     el.addEventListener('blur', ()=> el.style.transform='');
   });
+})();
+</script>
+
+<script>
+// Visual QA: dynamic overlay opacity per-section so text remains legible.
+(function(){
+  const defaultOpacity = 0.6;
+  const lowOpacity = 0.12; // for darker sections like footer
+  const sections = Array.from(document.querySelectorAll('header, section, footer'))
+    .filter(el=>el.id || el.tagName === 'FOOTER');
+
+  // If a section has data-overlay-opacity, use that value (0..1)
+  function getOpacityFor(el){
+    const attr = el.getAttribute('data-overlay-opacity');
+    if(attr !== null){
+      const n = parseFloat(attr);
+      if(!isNaN(n)) return Math.max(0, Math.min(1, n));
+    }
+    if(el.tagName === 'FOOTER') return 0; // keep footer dark
+    return defaultOpacity;
+  }
+
+  // set CSS var on documentElement
+  function setOverlay(op){
+    document.documentElement.style.setProperty('--bg-overlay-opacity', String(op));
+  }
+
+  // Observe center-visibility to pick the active section
+  const io = new IntersectionObserver((entries)=>{
+    // pick entry closest to viewport center with isIntersecting
+    let best = null; let bestScore = 0;
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      // score by intersectionRatio and proximity to center
+      const r = e.intersectionRatio;
+      const bb = e.boundingClientRect;
+      const centerDist = Math.abs((bb.top + bb.bottom)/2 - (window.innerHeight/2));
+      const score = r - (centerDist/window.innerHeight);
+      if(score > bestScore){ bestScore = score; best = e.target; }
+    });
+    if(best){ setOverlay(getOpacityFor(best)); }
+  }, {root:null, rootMargin:'-10% 0px -10% 0px', threshold:[0.25,0.45,0.6,0.85]});
+
+  sections.forEach(s=> io.observe(s));
+
+  // initial set based on first section in view
+  setTimeout(()=>{
+    const initial = sections.find(s=> s.getBoundingClientRect().top <= window.innerHeight*0.6 && s.getBoundingClientRect().bottom>window.innerHeight*0.15);
+    setOverlay(initial ? getOpacityFor(initial) : defaultOpacity);
+  }, 250);
+
 })();
 </script>
 </script>
