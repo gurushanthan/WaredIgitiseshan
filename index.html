@@ -533,10 +533,10 @@ h1,h2,h3{ font-weight:var(--heading-weight); letter-spacing:var(--display-tracki
   <!-- Background container: fixed, full-bleed layers (images or videos). Replace/add assets in /assets/images or /assets/videos -->
   <div id="bg-container" aria-hidden="true">
     <div class="bg-layer" data-type="image" style="background-image:url('warehouse-hero-illustration.svg');"></div>
-    <div class="bg-layer" data-type="image" style="background-image:url('assets/images/warehouse-bg-1.jpg');"></div>
-    <div class="bg-layer" data-type="image" style="background-image:url('assets/images/warehouse-bg-2.jpg');"></div>
+    <div class="bg-layer" data-type="image"></div>
+    <div class="bg-layer" data-type="image"></div>
     <!-- Example video layer (optional). Put video files in /assets/videos and update data-src -->
-    <div class="bg-layer video-layer" data-type="video" data-src="assets/videos/warehouse-loop.mp4" data-poster="assets/images/warehouse-poster.jpg"></div>
+    <div class="bg-layer video-layer" data-type="video" data-src="assets/videos/warehouse-loop.webm" data-poster="assets/images/warehouse-poster.jpg"></div>
   </div>
 
 
@@ -621,100 +621,99 @@ h1,h2,h3{ font-weight:var(--heading-weight); letter-spacing:var(--display-tracki
           <div class="v">986</div>
           <div class="delta">8% stronger</div>
         </div>
-        <div class="dash-card wide">
-          <div class="util-header">
-            <div class="k">Warehouse utilisation — Aisles 01–08</div>
-            <div class="util-badge">82% avg</div>
-          </div>
-          <div class="bars">
-            <i style="height:40%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:82%"></i>
-            <i style="height:38%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:90%"></i>
-          </div>
-        </div>
-        <div class="dash-card metric">
-          <div class="k">Active workers</div>
-          <div class="worker-wrap">
-            <div class="worker-number">37</div>
-            <div class="worker-badge">On shift</div>
-          </div>
-          <div class="delta secondary" style="color:var(--slate);">Now</div>
-        </div>
-        <div class="dash-card metric">
-          <div class="k">AI insight</div>
-          <div class="insight-pill">Reorder SKU-1042 in 3 days</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+          <main>
+            <section id="hero" data-overlay-opacity="0.45">
+              <div class="wrap hero-grid">
+                <div class="hero-copy">
+                  <div class="trust-pill">Trusted by warehouse & distribution teams</div>
+                  <h1>Digitise your warehouse.<br><span class="accent">Simplify every operation.</span></h1>
+                  <p>WareDigitise replaces paperwork and spreadsheets with one connected system — mobile apps, QR labels, live dashboards and AI insight — installed, trained and supported by a single team.</p>
+                  <div class="hero-ctas">
+                    <a class="btn btn-primary ripple" href="mailto:info@waredigitise.com?subject=Request%20Demo">Request Demo <span class="btn-icon">→</span></a>
+                    <a class="btn btn-outline ripple" href="mailto:info@waredigitise.com?subject=Book%20Consultation">Book Consultation</a>
+                  </div>
+                </div>
+                <div class="hero-visual">
+                  <div class="dash">Dashboard mockup (placeholder)</div>
+                </div>
+              </div>
+            </section>
 
-<!-- ================= PROBLEM ================= -->
-<section id="problem">
-  <div class="wrap">
-    <div class="eyebrow">The problem</div>
-    <div class="section-head reveal">
-      <h2>Still managing your warehouse on paper or Excel?</h2>
-      <p>Manual processes don't just slow you down — they hide the mistakes until they've already cost you money.</p>
-    </div>
-    <div class="problem-grid">
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><path d="M9 6h20v26H9z" stroke="#0F1B33" stroke-width="1.6"/><path d="M14 14h10M14 20h10M14 26h6" stroke="#0F1B33" stroke-width="1.6"/><path d="M25 6l-2-3M13 3l-2 3" stroke="#4E6EF2" stroke-width="1.6"/></svg><h4>Manual paperwork</h4><p>Workers write stock movements by hand, and every transcription is a chance for error.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="13" stroke="#0F1B33" stroke-width="1.6"/><path d="M13 25l12-12M13 13l12 12" stroke="#4E6EF2" stroke-width="1.8"/></svg><h4>Stock mistakes</h4><p>Miscounts and mislabelled goods ripple through receiving, storage and dispatch.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><path d="M8 30V12l11-6 11 6v18" stroke="#0F1B33" stroke-width="1.6"/><path d="M8 30h22M14 30v-9h10v9" stroke="#0F1B33" stroke-width="1.6"/><path d="M27 15l3 3-3 3" stroke="#4E6EF2" stroke-width="1.6"/></svg><h4>Lost inventory</h4><p>Without a single source of truth, items go missing between the shelf and the report.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><rect x="7" y="9" width="24" height="17" rx="2" stroke="#0F1B33" stroke-width="1.6"/><path d="M7 15h24" stroke="#0F1B33" stroke-width="1.6"/><circle cx="27" cy="21" r="1.4" fill="#4E6EF2"/></svg><h4>No live visibility</h4><p>Managers see yesterday's numbers, not what's happening on the floor right now.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><path d="M6 27l8-14 6 8 5-6 7 12" stroke="#0F1B33" stroke-width="1.6" stroke-linejoin="round"/><path d="M28 12l4-1-1 4" stroke="#4E6EF2" stroke-width="1.6"/></svg><h4>Slow dispatch</h4><p>Picking without directed routes means slower orders and higher labour cost.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><rect x="9" y="7" width="20" height="24" rx="2" stroke="#0F1B33" stroke-width="1.6"/><path d="M14 14h10M14 19h10M14 24h6" stroke="#0F1B33" stroke-width="1.6"/></svg><h4>Difficult reporting</h4><p>Building a report means exporting, merging and formatting spreadsheets by hand.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="14" r="5" stroke="#0F1B33" stroke-width="1.6"/><circle cx="25" cy="14" r="5" stroke="#0F1B33" stroke-width="1.6"/><path d="M7 30c0-5 4-8 7-8M31 30c0-5-4-8-7-8" stroke="#0F1B33" stroke-width="1.6"/><path d="M19 21v6" stroke="#4E6EF2" stroke-width="1.6" stroke-dasharray="2 2"/></svg><h4>Poor communication</h4><p>Teams across shifts and departments work from different versions of the truth.</p></div>
-      <div class="problem-card reveal"><svg class="icon" viewBox="0 0 38 38" fill="none"><path d="M19 6a13 13 0 100 26 13 13 0 000-26Z" stroke="#0F1B33" stroke-width="1.6"/><path d="M19 12v7l5 3" stroke="#4E6EF2" stroke-width="1.6" stroke-linecap="round"/></svg><h4>No traceability</h4><p>When something goes wrong, there's no record of who handled it, or when.</p></div>
-    </div>
-  </div>
-</section>
+            <section id="solution" class="bg-dim" data-overlay-opacity="0.6">
+              <div class="wrap section-head">
+                <h2>One platform. Complete warehouse digitisation.</h2>
+                <p>We don't sell you software and leave you to figure out the rest. WareDigitise supplies the hardware, the setup, the training and the ongoing support — all from one provider, accountable for the whole system.</p>
+              </div>
+              <div class="wrap solution-grid">
+                <div class="stack-list">
+                  <div class="stack-item"><div class="num">01</div><div><h4>Software</h4><p>Cloud dashboards, mobile app, role-based access, reporting and analytics.</p></div></div>
+                  <div class="stack-item"><div class="num">02</div><div><h4>Hardware</h4><p>QR labels, barcode printers, mini PCs, handheld scanners — sourced and installed.</p></div></div>
+                  <div class="stack-item"><div class="num">03</div><div><h4>Setup & training</h4><p>On-site configuration and hands-on training for every role on your floor.</p></div></div>
+                  <div class="stack-item"><div class="num">04</div><div><h4>Support</h4><p>A single point of contact for hardware faults, software updates and questions.</p></div></div>
+                </div>
+                <div class="included-panel">
+                  <h4>Everything included</h4>
+                  <div class="tags">Cloud Dashboard QR Labels Barcode Printing Mini PC Setup Thermal Printers Mobile Devices Role-Based Access AI Analytics Automation Reports Offline Mode Multi-Warehouse</div>
+                </div>
+              </div>
+            </section>
 
-<!-- ================= SOLUTION ================= -->
-<section id="solution" class="bg-dim">
-  <div class="wrap">
-    <div class="eyebrow">The solution</div>
-    <div class="solution-grid">
-      <div class="reveal">
-        <h2 style="font-size:clamp(26px,3.4vw,36px); font-weight:600; margin-bottom:18px; color:var(--navy); letter-spacing:-0.05em;">One platform. <span class="gradient-text">Complete warehouse digitisation.</span></h2>
-        <p style="color:var(--slate); font-size:15.5px; margin-bottom:28px; max-width:520px;">We don't sell you software and leave you to figure out the rest. WareDigitise supplies the hardware, the setup, the training and the ongoing support — all from one provider, accountable for the whole system.</p>
-        <div class="stack-list">
-          <div class="stack-item"><span class="num">01</span><div><h4>Software</h4><p>Cloud dashboards, mobile app, role-based access, reporting and analytics.</p></div></div>
-          <div class="stack-item"><span class="num">02</span><div><h4>Hardware</h4><p>QR labels, barcode printers, mini PCs, handheld scanners — sourced and installed.</p></div></div>
-          <div class="stack-item"><span class="num">03</span><div><h4>Setup &amp; training</h4><p>On-site configuration and hands-on training for every role on your floor.</p></div></div>
-          <div class="stack-item"><span class="num">04</span><div><h4>Support</h4><p>A single point of contact for hardware faults, software updates and questions.</p></div></div>
-        </div>
-      </div>
-      <div class="included-panel reveal">
-        <h4>Everything included</h4>
-        <div class="tags">
-          <span>Cloud Dashboard</span><span>QR Labels</span><span>Barcode Printing</span><span>Mini PC Setup</span>
-          <span>Thermal Printers</span><span>Mobile Devices</span><span>Role-Based Access</span><span>AI Analytics</span>
-          <span>Automation</span><span>Reports</span><span>Offline Mode</span><span>Multi-Warehouse</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+            <section id="how" class="wrap">
+              <div class="section-head">
+                <h2>How stock moves through WareDigitise</h2>
+                <p>Every item is tracked from the moment it arrives to the moment it leaves — no gaps, no guesswork.</p>
+              </div>
+              <div class="flow-track">
+                <div class="flow-step"><div class="node">1</div><h5>Supplier</h5><p>Purchase order created and shared digitally.</p></div>
+                <div class="flow-step"><div class="node">2</div><h5>Receiving</h5><p>Goods scanned in against the order on arrival.</p></div>
+                <div class="flow-step"><div class="node">3</div><h5>Quality check</h5><p>Grading and condition logged per item or batch.</p></div>
+                <div class="flow-step"><div class="node">4</div><h5>QR labelling</h5><p>Unique codes generated and printed on-site.</p></div>
+                <div class="flow-step"><div class="node">5</div><h5>Storage</h5><p>Bin location captured the moment stock is shelved.</p></div>
+              </div>
+            </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section id="how">
-  <div class="wrap">
-    <div class="eyebrow">How it works</div>
-    <div class="section-head reveal">
-      <h2>How stock moves through WareDigitise</h2>
-      <p>Every item is tracked from the moment it arrives to the moment it leaves — no gaps, no guesswork.</p>
-    </div>
-    <div class="reveal">
-      <div class="flow-track">
-        <div class="flow-step"><div class="node">1</div><h5>Supplier</h5><p>Purchase order created and shared digitally.</p></div>
-        <div class="flow-step"><div class="node">2</div><h5>Receiving</h5><p>Goods scanned in against the order on arrival.</p></div>
-        <div class="flow-step"><div class="node">3</div><h5>Quality check</h5><p>Grading and condition logged per item or batch.</p></div>
-        <div class="flow-step"><div class="node">4</div><h5>QR labelling</h5><p>Unique codes generated and printed on-site.</p></div>
-        <div class="flow-step"><div class="node">5</div><h5>Storage</h5><p>Bin location captured the moment stock is shelved.</p></div>
-        <div class="flow-step"><div class="node">6</div><h5>Tracking</h5><p>Live inventory position across every warehouse.</p></div>
-        <div class="flow-step"><div class="node">7</div><h5>Picking</h5><p>Workers guided to the right bin for each order.</p></div>
-        <div class="flow-step"><div class="node">8</div><h5>Dispatch</h5><p>Orders scanned out and confirmed against manifest.</p></div>
-        <div class="flow-step"><div class="node">9</div><h5>Reports</h5><p>Daily summaries delivered automatically.</p></div>
+            <section id="features" class="wrap bg-tint" data-overlay-opacity="0.7">
+              <div class="section-head">
+                <h2>Built for the floor, not just the office</h2>
+                <p>Every feature is designed around how warehouses actually operate — including when the internet doesn't.</p>
+              </div>
+              <div class="feat-grid wrap">
+                <div class="feat-card"><h4>Mobile Worker App</h4><ul><li>Receive goods & scan QR codes</li><li>Add stock and update grading</li><li>Dispatch and confirm orders</li></ul></div>
+                <div class="feat-card"><h4>QR Label System</h4><ul><li>Labels generated automatically</li><li>Print directly to thermal printers</li><li>Unique code per item or batch</li></ul></div>
+                <div class="feat-card"><h4>Inventory Management</h4><ul><li>Real-time stock across warehouses</li><li>Batch & expiry tracking</li><li>Bin-level location tracking</li></ul></div>
+              </div>
+            </section>
+
+            <section id="testimonials" class="wrap">
+              <div class="section-head"><h2>Trusted by warehouse & distribution teams</h2></div>
+              <div class="logos-row">
+                <div class="logo">Client A</div>
+                <div class="logo">Client B</div>
+                <div class="logo">Client C</div>
+                <div class="logo">Client D</div>
+              </div>
+              <div class="wrap">
+                <div class="dash">Testimonial slider (placeholder)</div>
+              </div>
+            </section>
+
+            <section id="cta-band" class="bg-dim">
+              <div class="wrap center"><h2>Ready to digitise your warehouse?</h2><p>Book a demo or request a consultation and we'll show you how it works in your operation.</p><div style="margin-top:18px"><a class="btn btn-primary ripple" href="mailto:info@waredigitise.com?subject=Request%20Demo">Request Demo</a> <a class="btn btn-outline ripple" href="mailto:info@waredigitise.com?subject=Book%20Consultation">Book Consultation</a></div></div>
+            </section>
+
+            <footer class="wrap">
+              <div class="foot-grid">
+                <div>
+                  <h3>WareDigitise</h3>
+                  <p>Complete warehouse digitisation — software, hardware, and support from one provider.</p>
+                </div>
+                <div class="foot-col"><h6>Company</h6><ul><li><a href="#hero">Home</a></li><li><a href="#solution">About</a></li><li><a href="#solution">Services</a></li><li><a href="mailto:info@waredigitise.com?subject=Contact%20Enquiry">Contact</a></li></ul></div>
+                <div class="foot-col"><h6>Solutions</h6><ul><li><a href="#features">Warehouse Management</a></li><li><a href="#features">Inventory</a></li><li><a href="#ai">AI</a></li></ul></div>
+                <div class="foot-col"><h6>Resources</h6><ul><li><a href="/blog.html">Blog</a></li><li><a href="#faq">FAQ</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+              </div>
+              <div class="foot-bottom"><div>© 2026 WareDigitise. All rights reserved.</div><div class="foot-social"><a href="#">FB</a><a href="#">LI</a><a href="#">IG</a></div></div>
+            </footer>
+          </main>
         <div class="flow-step"><div class="node">10</div><h5>AI insight</h5><p>Trends, forecasts and anomalies surfaced.</p></div>
         <div class="flow-step"><div class="node">11</div><h5>Dashboard</h5><p>Management sees the whole operation, live.</p></div>
       </div>
