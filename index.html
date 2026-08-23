@@ -495,6 +495,19 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
 .ripple-dot{position:absolute; border-radius:50%; background:rgba(255,255,255,0.35); transform:scale(0); animation:ripple 700ms ease-out; pointer-events:none;}
 @keyframes ripple{to{transform:scale(6); opacity:0;}}
 
+/* Micro-interaction & refined typography tweaks */
+:root{ --heading-weight:880; --display-tracking:-0.03em; --micro-duration:200ms; }
+h1,h2,h3{ font-weight:var(--heading-weight); letter-spacing:var(--display-tracking); }
+.btn .btn-icon{ transition: transform var(--micro-duration) ease, opacity var(--micro-duration) ease; }
+.btn:focus-visible{ outline:3px solid rgba(78,110,242,0.14); outline-offset:4px; border-radius:10px; }
+.social-icon{ transition:transform .22s ease, box-shadow .22s ease, filter .22s ease; }
+.social-icon:focus-visible{ outline:3px solid rgba(10,102,194,0.12); outline-offset:3px; }
+.logos-row .logo{ transition: transform .24s cubic-bezier(.2,.9,.2,1), filter .24s ease, opacity .24s ease; }
+
+@media (prefers-reduced-motion: reduce){
+  .btn .btn-icon, .logos-row .logo, .social-icon{ transition:none !important; animation:none !important; }
+}
+
 .logos-row{display:flex; gap:22px; align-items:center; justify-content:center; flex-wrap:wrap; padding:22px 0 8px; opacity:0.95;}
 .logos-row .logo{width:120px; height:40px; display:flex; align-items:center; justify-content:center; filter:grayscale(0.06) contrast(0.95) opacity(.9); transition:transform .18s ease, filter .18s ease;}
 .logos-row .logo:hover{transform:translateY(-6px) scale(1.02); filter:grayscale(0) opacity(1);}
@@ -1247,6 +1260,49 @@ if (contactForm) {
     }).catch(()=>{ fallback.style.opacity = '1'; });
   })();
 })();
+</script>
+
+<script>
+// Additional micro-interactions: keyboard ripple activation and icon lift
+(function(){
+  function triggerRipple(btn, clientX, clientY){
+    const rect = btn.getBoundingClientRect();
+    const dot = document.createElement('span');
+    dot.className = 'ripple-dot';
+    const size = Math.max(rect.width, rect.height);
+    dot.style.width = dot.style.height = size + 'px';
+    dot.style.left = (clientX - rect.left - size/2) + 'px';
+    dot.style.top = (clientY - rect.top - size/2) + 'px';
+    btn.appendChild(dot);
+    setTimeout(()=> dot.remove(), 900);
+  }
+
+  document.querySelectorAll('.btn.ripple').forEach(btn=>{
+    // keyboard activation (Enter / Space)
+    btn.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        const cx = btn.getBoundingClientRect().left + btn.offsetWidth/2;
+        const cy = btn.getBoundingClientRect().top + btn.offsetHeight/2;
+        triggerRipple(btn, cx, cy);
+      }
+    });
+    // icon lift on hover for pointer devices
+    const icon = btn.querySelector('.btn-icon');
+    if(icon){
+      btn.addEventListener('mouseenter', ()=>{ icon.style.transform = 'translateY(-4px)'; });
+      btn.addEventListener('mouseleave', ()=>{ icon.style.transform = ''; });
+    }
+  });
+
+  // subtle logo float on focus/hover for a premium feel
+  document.querySelectorAll('.logos-row .logo, .social-icon').forEach(el=>{
+    el.addEventListener('mouseenter', ()=> el.style.transform='translateY(-6px) scale(1.02)');
+    el.addEventListener('mouseleave', ()=> el.style.transform='');
+    el.addEventListener('focus', ()=> el.style.transform='translateY(-6px) scale(1.02)');
+    el.addEventListener('blur', ()=> el.style.transform='');
+  });
+})();
+</script>
 </script>
 </body>
 </html>
