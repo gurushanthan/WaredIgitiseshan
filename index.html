@@ -457,9 +457,48 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
 .foot-social svg{width:15px; height:15px; display:block;}
 
 .center{text-align:center; margin-left:auto; margin-right:auto;}
+
+/* ---------- Full-bleed background container ---------- */
+#bg-container{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+.bg-layer{position:absolute; inset:0; background-size:cover; background-position:center center; opacity:0; transform:scale(1.02); transition:opacity 900ms cubic-bezier(.2,.9,.2,1), transform 1400ms cubic-bezier(.2,.9,.2,1); will-change:opacity, transform;}
+.bg-layer.active{opacity:1; transform:scale(1);}
+.bg-layer.video{background:none;}
+.bg-layer video{width:100%; height:100%; object-fit:cover; display:block;}
+.bg-layer::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,18,36,0.25), rgba(255,255,255,0.02)); mix-blend-mode:normal;}
+
+@media (max-width:900px){
+  /* Disable large video/heavy backgrounds on small screens for performance */
+  .bg-layer.video, .bg-layer[data-type="video"]{display:none !important;}
+}
+
+/* ---------- Ultra-polish UI styles ---------- */
+.particle-overlay{position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay; opacity:.12; background:radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06), transparent 6%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 8%);}
+.btn .btn-icon{display:inline-flex; width:18px; height:18px; margin-left:6px; transform:translateY(0); transition:transform .18s ease, opacity .18s ease;}
+.btn:hover .btn-icon{transform:translateY(-3px);}
+.btn:active{transform:translateY(0);}
+.btn.ripple{position:relative; overflow:hidden;}
+.ripple-dot{position:absolute; border-radius:50%; background:rgba(255,255,255,0.35); transform:scale(0); animation:ripple 700ms ease-out; pointer-events:none;}
+@keyframes ripple{to{transform:scale(6); opacity:0;}}
+
+.logos-row{display:flex; gap:22px; align-items:center; justify-content:center; flex-wrap:wrap; padding:22px 0 8px; opacity:0.95;}
+.logos-row .logo{width:120px; height:40px; display:flex; align-items:center; justify-content:center; filter:grayscale(0.06) contrast(0.95) opacity(.9); transition:transform .18s ease, filter .18s ease;}
+.logos-row .logo:hover{transform:translateY(-6px) scale(1.02); filter:grayscale(0) opacity(1);}
+
+/* subtle floating animation for hero */
+@keyframes floatCard{0%{transform:translateY(0);}50%{transform:translateY(-6px);}100%{transform:translateY(0);}}
 </style>
 </head>
 <body>
+
+  <!-- Background container: fixed, full-bleed layers (images or videos). Replace/add assets in /assets/images or /assets/videos -->
+  <div id="bg-container" aria-hidden="true">
+    <div class="bg-layer" data-type="image" style="background-image:url('warehouse-hero-illustration.svg');"></div>
+    <div class="bg-layer" data-type="image" style="background-image:url('assets/images/warehouse-bg-1.jpg');"></div>
+    <div class="bg-layer" data-type="image" style="background-image:url('assets/images/warehouse-bg-2.jpg');"></div>
+    <!-- Example video layer (optional). Put video files in /assets/videos and update data-src -->
+    <div class="bg-layer video-layer" data-type="video" data-src="assets/videos/warehouse-loop.mp4" data-poster="assets/images/warehouse-poster.jpg"></div>
+  </div>
+
 
 <header>
   <nav>
@@ -506,8 +545,18 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
       <h1>Digitise your warehouse.<br>Simplify <span class="accent">every</span> operation.</h1>
       <p>WareDigitise replaces paperwork and spreadsheets with one connected system — mobile apps, QR labels, live dashboards and AI insight — installed, trained and supported by a single team.</p>
       <div class="hero-ctas">
-        <a href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary">Request Demo</a>
-        <a href="mailto:info@waredigitise.com?subject=Book%20Consultation" class="btn btn-outline">Book Consultation</a>
+        <a href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary ripple" aria-label="Request Demo">
+          Request Demo
+          <span class="btn-icon" aria-hidden="true"> 
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+        <a href="mailto:info@waredigitise.com?subject=Book%20Consultation" class="btn btn-outline ripple" aria-label="Book Consultation">
+          Book Consultation
+          <span class="btn-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#0F1B33" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
       </div>
       <div class="hero-benefits">
         <div class="b"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="7.5" stroke="#4E6EF2" stroke-width="1.4"/><path d="M5.5 8.7l2 2 4-4.5" stroke="#4E6EF2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Software and hardware from one accountable provider</div>
@@ -850,6 +899,13 @@ footer{background:var(--navy); color:#B7C0D1; padding:64px 0 28px;}
       <h2>Trusted by the people running the floor</h2>
       <p>Real feedback from teams who moved off paper and spreadsheets.</p>
     </div>
+    <div class="logos-row" aria-hidden="false">
+      <div class="logo" title="Client A"><svg width="110" height="32" viewBox="0 0 110 32" fill="none"><rect width="110" height="32" rx="6" fill="#fff" opacity="0"/><text x="12" y="20" fill="#4E6EF2" font-family="Inter, sans-serif" font-weight="700" font-size="14">Client A</text></svg></div>
+      <div class="logo" title="Client B"><svg width="110" height="32" viewBox="0 0 110 32" fill="none"><text x="12" y="20" fill="#3454D1" font-family="Inter, sans-serif" font-weight="700" font-size="14">Client B</text></svg></div>
+      <div class="logo" title="Client C"><svg width="110" height="32" viewBox="0 0 110 32" fill="none"><text x="12" y="20" fill="#0F1B33" font-family="Inter, sans-serif" font-weight="700" font-size="14">Client C</text></svg></div>
+      <div class="logo" title="Client D"><svg width="110" height="32" viewBox="0 0 110 32" fill="none"><text x="12" y="20" fill="#6C8CFF" font-family="Inter, sans-serif" font-weight="700" font-size="14">Client D</text></svg></div>
+      <div class="logo" title="Client E"><svg width="110" height="32" viewBox="0 0 110 32" fill="none"><text x="12" y="20" fill="#2B6EF2" font-family="Inter, sans-serif" font-weight="700" font-size="14">Client E</text></svg></div>
+    </div>
     <div class="test-grid">
       <div class="test-card reveal"><div class="stars">★★★★★</div><p>"We stopped losing stock the week we went live. Every item is traceable now, from receiving to dispatch."</p><div class="test-who"><div class="test-avatar">RW</div><div><b>R. Whitfield</b><span>Warehouse Owner</span></div></div></div>
       <div class="test-card reveal"><div class="stars">★★★★★</div><p>"Reporting used to take a full day at month end. Now it's automatic, and it's more accurate than what we had before."</p><div class="test-who"><div class="test-avatar">MK</div><div><b>M. Karim</b><span>Factory Manager</span></div></div></div>
@@ -1064,6 +1120,101 @@ if (contactForm) {
     window.location.href = `mailto:info@waredigitise.com?subject=${subject}&body=${body}`;
   });
 }
+</script>
+
+<script>
+(function(){
+  const bgContainer = document.getElementById('bg-container');
+  if(!bgContainer) return;
+  const layers = Array.from(bgContainer.querySelectorAll('.bg-layer'));
+
+  // Prepare video layers and preload images
+  layers.forEach(layer=>{
+    if(layer.dataset.type === 'video'){
+      const src = layer.dataset.src;
+      const poster = layer.dataset.poster;
+      if(src){
+        const video = document.createElement('video');
+        video.src = src;
+        if(poster) video.poster = poster;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        layer.appendChild(video);
+        layer._video = video;
+      }
+    } else {
+      const style = layer.getAttribute('style') || '';
+      const m = style.match(/url\(['"]?(.*?)['"]?\)/);
+      if(m && m[1]){ const img = new Image(); img.src = m[1]; }
+    }
+  });
+
+  const sections = Array.from(document.querySelectorAll('section'));
+  function getActiveIndex(){
+    const mid = window.innerHeight/2 + window.scrollY;
+    for(let i=0;i<sections.length;i++){
+      const r = sections[i].getBoundingClientRect();
+      const top = r.top + window.scrollY;
+      const bottom = top + r.height;
+      if(mid >= top && mid < bottom) return i;
+    }
+    return 0;
+  }
+
+  let current = -1;
+  function setActive(idx){
+    if(idx < 0 || idx >= layers.length) idx = 0;
+    if(current === idx) return;
+    current = idx;
+    layers.forEach((l,i)=>{
+      if(i === idx){
+        l.classList.add('active');
+        if(l._video && typeof l._video.play === 'function'){ l._video.play().catch(()=>{}); }
+      } else {
+        l.classList.remove('active');
+        if(l._video && typeof l._video.pause === 'function'){ l._video.pause(); }
+      }
+    });
+  }
+
+  // Map section index to layer index (wrap if fewer layers)
+  function updateActiveByScroll(){
+    const si = getActiveIndex();
+    const layerIndex = si % layers.length;
+    setActive(layerIndex);
+  }
+
+  let raf = null;
+  function onScroll(){ if(raf) return; raf = requestAnimationFrame(()=>{ updateActiveByScroll(); raf = null; }); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', ()=>{ updateActiveByScroll(); });
+
+  // initial
+  setTimeout(()=>{ updateActiveByScroll(); }, 300);
+
+  // ripple effect for buttons
+  function attachRipples(){
+    document.querySelectorAll('.btn.ripple').forEach(btn=>{
+      btn.addEventListener('click', function(e){
+        const rect = btn.getBoundingClientRect();
+        const dot = document.createElement('span');
+        dot.className = 'ripple-dot';
+        const size = Math.max(rect.width, rect.height);
+        dot.style.width = dot.style.height = size + 'px';
+        dot.style.left = (e.clientX - rect.left - size/2) + 'px';
+        dot.style.top = (e.clientY - rect.top - size/2) + 'px';
+        btn.appendChild(dot);
+        setTimeout(()=> dot.remove(), 800);
+      });
+    });
+  }
+  attachRipples();
+})();
 </script>
 </body>
 </html>
