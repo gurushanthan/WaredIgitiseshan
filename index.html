@@ -4101,6 +4101,7 @@
     </div>
   </footer>
 
+  <script src="/assets/js/sanity-news.js"></script>
   <script>
     const mobileToggle = document.querySelector('.mobile-toggle');
     const siteNav = document.getElementById('site-nav');
@@ -4185,7 +4186,6 @@
       });
     });
 
-    const newsletterStorageKey = 'waredigitise_news_posts';
     const defaultNewsletter = [
       {
         category: 'Operations',
@@ -4227,16 +4227,8 @@
       return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(date);
     };
 
-    const getNewsletterPosts = () => {
-      try {
-        const raw = localStorage.getItem(newsletterStorageKey);
-        if (!raw) return defaultNewsletter;
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) && parsed.length ? parsed : defaultNewsletter;
-      } catch (error) {
-        return defaultNewsletter;
-      }
-    };
+    let newsletterPosts = defaultNewsletter;
+    const getNewsletterPosts = () => newsletterPosts;
 
     const renderNewsletter = () => {
       const featureNode = document.getElementById('newsletter-feature');
@@ -4299,8 +4291,23 @@
         renderNewsletter();
       };
 
-      setInterval(cycleNewsletter, 2000);
       renderNewsletter();
+      if (window.fetchWareDigitiseNews) {
+        window.fetchWareDigitiseNews().then((posts) => {
+          if (!posts.length) return;
+          newsletterPosts = posts.map((post) => ({
+            category: post.category,
+            date: post.publishedAt,
+            title: post.title,
+            summary: post.summary,
+            link: `/blog.html?slug=${encodeURIComponent(post.slug || post._id)}`,
+            image: post.imageUrl,
+          }));
+          newsletterFeature.dataset.currentIndex = '0';
+          renderNewsletter();
+        }).catch((error) => console.warn('Could not load Sanity news; showing the default stories.', error));
+      }
+      setInterval(cycleNewsletter, 7000);
     }
   </script>
 </body>

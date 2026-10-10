@@ -52,6 +52,17 @@
     .article-card h3{font-size:1.35rem; margin-bottom:8px; line-height:1.2;}
     .article-card p{color:var(--slate); font-size:0.97rem; line-height:1.7;}
     .article-card a{display:inline-block; margin-top:16px; color:var(--blue-deep); font-weight:600;}
+    .article-card .date{display:block; margin-top:12px; color:var(--slate); font-size:.84rem;}
+    .sanity-article{max-width:820px; margin:0 auto; padding:10px 0 40px;}
+    .sanity-article[hidden]{display:none;}
+    .sanity-article .tag{display:inline-block; color:var(--blue-deep); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px;}
+    .sanity-article h2{font-size:clamp(2rem,5vw,3.4rem); line-height:1.1; margin-bottom:14px;}
+    .sanity-article .article-summary{font-size:1.12rem; color:var(--slate); margin-bottom:18px;}
+    .sanity-article .article-cover{width:100%; max-height:460px; object-fit:cover; border-radius:18px; margin:12px 0 26px;}
+    .sanity-article-body{font-size:1.05rem; line-height:1.85; color:#27364e;}
+    .sanity-article-body p,.sanity-article-body h2,.sanity-article-body h3,.sanity-article-body blockquote{margin:0 0 1.1em;}
+    .sanity-article-body h2,.sanity-article-body h3{color:var(--navy); line-height:1.25;}
+    .sanity-article-body blockquote{border-left:3px solid var(--blue); padding-left:18px; color:var(--slate);}
     .footer{background:var(--navy); color:#dfe6f5; padding:42px 0;}
     .footer-inner{display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap;}
     @media (max-width: 850px){
@@ -105,7 +116,8 @@
 
     <section class="articles">
       <div class="wrap">
-        <div class="article-grid">
+        <article class="sanity-article" id="sanity-article" hidden></article>
+        <div class="article-grid" id="article-grid">
           <article class="article-card">
             <div class="tag">Warehouse</div>
             <h3>What is warehouse digitisation and why does it matter?</h3>
@@ -142,5 +154,58 @@
       </div>
     </div>
   </footer>
+  <script src="/assets/js/sanity-news.js"></script>
+  <script>
+    const escapeText = (value = '') => String(value).replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
+    const displayDate = (value) => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}).format(date);
+    };
+    const articleGrid = document.getElementById('article-grid');
+    const articleView = document.getElementById('sanity-article');
+
+    if (window.fetchWareDigitiseNews) {
+      window.fetchWareDigitiseNews().then((posts) => {
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        const selectedPost = posts.find((post) => post.slug === slug);
+
+        if (selectedPost) {
+          articleGrid.hidden = true;
+          articleView.hidden = false;
+          document.title = `${selectedPost.title} | WareDigitise`;
+          articleView.innerHTML = `
+            <span class="tag">${escapeText(selectedPost.category || 'News')}</span>
+            <h2>${escapeText(selectedPost.title)}</h2>
+            <p class="article-summary">${escapeText(selectedPost.summary || '')}</p>
+            <time datetime="${escapeText(selectedPost.publishedAt || '')}">${escapeText(displayDate(selectedPost.publishedAt))}</time>
+            ${selectedPost.imageUrl ? `<img class="article-cover" src="${escapeText(selectedPost.imageUrl)}" alt="">` : ''}
+            <div class="sanity-article-body"></div>
+            <p><a href="/blog.html">← All articles</a></p>`;
+
+          const body = articleView.querySelector('.sanity-article-body');
+          (selectedPost.body || []).filter((block) => block._type === 'block').forEach((block) => {
+            const text = (block.children || []).map((child) => child.text || '').join('');
+            if (!text.trim()) return;
+            const style = block.style || 'normal';
+            const tag = ({h2: 'h2', h3: 'h3', blockquote: 'blockquote'})[style] || 'p';
+            const element = document.createElement(tag);
+            element.textContent = text;
+            body.appendChild(element);
+          });
+        } else if (posts.length) {
+          articleGrid.innerHTML = posts.map((post) => `
+            <article class="article-card">
+              <div class="tag">${escapeText(post.category || 'News')}</div>
+              <h3>${escapeText(post.title || '')}</h3>
+              <p>${escapeText(post.summary || '')}</p>
+              <time class="date" datetime="${escapeText(post.publishedAt || '')}">${escapeText(displayDate(post.publishedAt))}</time>
+              <a href="/blog.html?slug=${encodeURIComponent(post.slug || '')}">Read article →</a>
+            </article>`).join('');
+        }
+      }).catch((error) => console.warn('Could not load Sanity news; showing the existing articles.', error));
+    }
+  </script>
 </body>
 </html>
