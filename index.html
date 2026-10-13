@@ -3528,6 +3528,138 @@
       color: #fff;
     }
 
+    .demo-dialog {
+      width: min(540px, calc(100% - 28px));
+      max-width: none;
+      max-height: min(90dvh, 760px);
+      padding: 0;
+      overflow: auto;
+      border: 1px solid rgba(91, 86, 160, .18);
+      border-radius: 24px;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fffb 58%, #f6f3ff 100%);
+      color: #17243a;
+      box-shadow: 0 32px 90px rgba(17, 27, 53, .3);
+    }
+
+    .demo-dialog::backdrop {
+      background: rgba(14, 24, 45, .58);
+      backdrop-filter: blur(5px);
+    }
+
+    .demo-dialog-inner { position: relative; padding: clamp(24px, 5vw, 38px); }
+
+    .demo-dialog-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(23, 36, 58, .12);
+      border-radius: 50%;
+      background: rgba(255,255,255,.82);
+      color: #34435c;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .demo-dialog-eyebrow {
+      margin: 0 46px 9px 0;
+      color: #087653;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .demo-dialog h2 {
+      margin: 0 40px 8px 0;
+      color: #172844;
+      font-size: clamp(1.65rem, 5vw, 2.15rem);
+      letter-spacing: -.055em;
+      line-height: 1.12;
+    }
+
+    .demo-dialog-intro {
+      max-width: 420px;
+      margin: 0 0 24px;
+      color: #5e6b80;
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+
+    .demo-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 14px; }
+    .demo-field { min-width: 0; }
+    .demo-field-full { grid-column: 1 / -1; }
+
+    .demo-field label {
+      display: block;
+      margin-bottom: 6px;
+      color: #253451;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .demo-field label span { color: #7a8495; font-weight: 500; }
+
+    .demo-field input,
+    .demo-field select,
+    .demo-field textarea {
+      display: block;
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid rgba(54, 72, 105, .2);
+      border-radius: 11px;
+      outline: none;
+      background: rgba(255,255,255,.94);
+      color: #17243a;
+      font-size: .9rem;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .demo-field textarea {
+      min-height: 104px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .demo-field input:focus,
+    .demo-field select:focus,
+    .demo-field textarea:focus {
+      border-color: #6658dc;
+      box-shadow: 0 0 0 3px rgba(102,88,220,.14);
+    }
+
+    .demo-form-submit {
+      width: 100%;
+      justify-content: center;
+      margin-top: 20px;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .demo-privacy {
+      margin: 10px 0 0;
+      color: #687589;
+      font-size: .72rem;
+      text-align: center;
+    }
+
+    .demo-form-status {
+      margin: 12px 0 0;
+      color: #087653;
+      font-size: .8rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      .demo-form-grid { grid-template-columns: 1fr; gap: 13px; }
+      .demo-field-full { grid-column: auto; }
+    }
+
   </style>
 </head>
 <body>
@@ -3545,16 +3677,67 @@
         <a href="#pricing">Pricing</a>
         <a href="/blog.html">Daily News</a>
         <a href="#faq">FAQ</a>
-        <a class="mobile-demo" href="mailto:info@waredigitise.com?subject=Request%20Demo">Request demo</a>
+        <a class="mobile-demo" data-demo-open href="mailto:info@waredigitise.com?subject=Request%20Demo">Request demo</a>
       </nav>
 
       <div class="nav-actions">
-        <a class="btn btn-primary" href="mailto:info@waredigitise.com?subject=Request%20Demo">Request demo</a>
+        <a class="btn btn-primary" data-demo-open href="mailto:info@waredigitise.com?subject=Request%20Demo">Request demo</a>
       </div>
 
       <button class="mobile-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
     </div>
   </header>
+
+  <dialog class="demo-dialog" id="demo-request-dialog" aria-labelledby="demo-dialog-title">
+    <div class="demo-dialog-inner">
+      <button class="demo-dialog-close" type="button" aria-label="Close demo request form">&times;</button>
+      <p class="demo-dialog-eyebrow">Request a demo</p>
+      <h2 id="demo-dialog-title">Let’s talk about your warehouse.</h2>
+      <p class="demo-dialog-intro">Share a few details and our team can tailor the conversation to your operation.</p>
+
+      <form id="demo-request-form" action="https://formsubmit.co/info@waredigitise.com" method="POST">
+        <input type="hidden" name="_subject" value="New WareDigitise demo request" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0" />
+        <div class="demo-form-grid">
+          <div class="demo-field">
+            <label for="demo-name">Your name</label>
+            <input id="demo-name" name="name" autocomplete="name" required autofocus />
+          </div>
+          <div class="demo-field">
+            <label for="demo-email">Email</label>
+            <input id="demo-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="demo-field">
+            <label for="demo-company">Company</label>
+            <input id="demo-company" name="company" autocomplete="organization" required />
+          </div>
+          <div class="demo-field">
+            <label for="demo-sector">Market sector <span>(optional)</span></label>
+            <select id="demo-sector" name="sector">
+              <option value="">Choose a sector</option>
+              <option>Warehousing</option>
+              <option>Distribution</option>
+              <option>Food</option>
+              <option>Manufacturing</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="demo-field demo-field-full">
+            <label for="demo-phone">Phone number <span>(optional)</span></label>
+            <input id="demo-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="demo-field demo-field-full">
+            <label for="demo-needs">Anything else we should know? <span>(optional)</span></label>
+            <textarea id="demo-needs" name="needs" rows="3" maxlength="500" placeholder="Share a priority, challenge, or anything that would help us prepare."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary demo-form-submit" type="submit">Request my demo</button>
+        <p class="demo-privacy">We’ll use these details only to follow up about your demo.</p>
+        <p class="demo-form-status" id="demo-form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </dialog>
 
   <section class="newsletter-section">
     <div class="container">
@@ -3573,7 +3756,7 @@
           <p class="hero-sub">WareDigitise replaces paperwork and spreadsheets with one connected warehouse system — mobile scanning, QR labels, live dashboards and AI insight, all installed and supported by one team.</p>
 
           <div class="hero-actions">
-            <a href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary">Request demo</a>
+            <a data-demo-open href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary">Request demo</a>
             <a href="#solution" class="btn btn-secondary">See platform</a>
           </div>
 
@@ -4414,7 +4597,7 @@
             <h2>Book a warehouse review.</h2>
             <p>Tell us about your operation and we’ll recommend the right setup for your workflow.</p>
           </div>
-          <a href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary">Request demo</a>
+          <a data-demo-open href="mailto:info@waredigitise.com?subject=Request%20Demo" class="btn btn-primary">Request demo</a>
         </div>
       </div>
     </section>
@@ -4499,6 +4682,78 @@
           mobileToggle.setAttribute('aria-expanded', 'false');
           mobileToggle.setAttribute('aria-label', 'Open menu');
         });
+      });
+    }
+
+    const demoDialog = document.getElementById('demo-request-dialog');
+    const demoForm = document.getElementById('demo-request-form');
+    const demoFormStatus = document.getElementById('demo-form-status');
+
+    document.querySelectorAll('[data-demo-open]').forEach(trigger => {
+      trigger.addEventListener('click', event => {
+        if (!demoDialog || typeof demoDialog.showModal !== 'function') return;
+        event.preventDefault();
+        if (demoForm) demoForm.reset();
+        if (demoFormStatus) demoFormStatus.textContent = '';
+        demoDialog.showModal();
+      });
+    });
+
+    if (demoDialog) {
+      demoDialog.querySelector('.demo-dialog-close')?.addEventListener('click', () => demoDialog.close());
+      demoDialog.addEventListener('click', event => {
+        if (event.target === demoDialog) demoDialog.close();
+      });
+    }
+
+    if (demoForm && demoFormStatus) {
+      demoForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const submitButton = demoForm.querySelector('[type="submit"]');
+        const originalButtonText = submitButton?.textContent || 'Request my demo';
+        const values = Object.fromEntries(new FormData(demoForm).entries());
+        const company = String(values.company || '').trim();
+        values._subject = `New WareDigitise demo request${company ? ` - ${company}` : ''}`;
+        values._replyto = String(values.email || '').trim();
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending request…';
+        }
+        demoFormStatus.textContent = 'Sending your request securely…';
+        demoFormStatus.style.color = '#5e6b80';
+
+        fetch('https://formsubmit.co/ajax/info@waredigitise.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(values),
+        })
+          .then(async response => {
+            const result = await response.json();
+            if (!response.ok || result.success === false || result.success === 'false') {
+              throw new Error(result.message || 'The form service rejected the request.');
+            }
+            return result;
+          })
+          .then(() => {
+            demoForm.reset();
+            demoFormStatus.textContent = 'Thank you. Your demo request has been sent to our team.';
+            demoFormStatus.style.color = '#087653';
+          })
+          .catch(error => {
+            console.error('Demo request could not be sent:', error);
+            demoFormStatus.textContent = 'We couldn’t send your request right now. Please email info@waredigitise.com and we’ll help you.';
+            demoFormStatus.style.color = '#a33b47';
+          })
+          .finally(() => {
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = originalButtonText;
+            }
+          });
       });
     }
 
