@@ -3655,6 +3655,43 @@
       text-align: center;
     }
 
+    .demo-request-success {
+      padding: 30px 20px 18px;
+      text-align: center;
+    }
+
+    .demo-request-success[hidden] { display: none; }
+
+    .demo-request-success-mark {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 16px;
+      border: 1px solid rgba(16,160,112,.18);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #dfffee, #f2fff8);
+      color: #07845e;
+      font-size: 1.6rem;
+      font-weight: 800;
+      box-shadow: 0 12px 24px -20px rgba(8,132,94,.7);
+    }
+
+    .demo-request-success h3 {
+      margin-bottom: 9px;
+      color: #172844;
+      font-size: 1.35rem;
+      letter-spacing: -.04em;
+    }
+
+    .demo-request-success p {
+      max-width: 390px;
+      margin: 0 auto;
+      color: #5e6b80;
+      font-size: .9rem;
+      line-height: 1.7;
+    }
+
     @media (max-width: 520px) {
       .demo-form-grid { grid-template-columns: 1fr; gap: 13px; }
       .demo-field-full { grid-column: auto; }
@@ -3695,7 +3732,7 @@
       <h2 id="demo-dialog-title">Let’s talk about your warehouse.</h2>
       <p class="demo-dialog-intro">Share a few details and our team can tailor the conversation to your operation.</p>
 
-      <form id="demo-request-form" action="https://formsubmit.co/info@waredigitise.com" method="POST">
+      <form id="demo-request-form" action="https://formsubmit.co/66d739e1a5cb8eb3b20eff71fe0a2726" method="POST">
         <input type="hidden" name="_subject" value="New WareDigitise demo request" />
         <input type="hidden" name="_template" value="table" />
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0" />
@@ -3736,6 +3773,11 @@
         <p class="demo-privacy">We’ll use these details only to follow up about your demo.</p>
         <p class="demo-form-status" id="demo-form-status" role="status" aria-live="polite"></p>
       </form>
+      <div class="demo-request-success" id="demo-request-success" role="status" aria-live="polite" hidden>
+        <div class="demo-request-success-mark" aria-hidden="true">✓</div>
+        <h3>Thank you for requesting a demo.</h3>
+        <p>Your details have been sent to our team. A WareDigitise specialist will be in touch to discuss your needs and arrange a suitable time.</p>
+      </div>
     </div>
   </dialog>
 
@@ -4688,16 +4730,24 @@
     const demoDialog = document.getElementById('demo-request-dialog');
     const demoForm = document.getElementById('demo-request-form');
     const demoFormStatus = document.getElementById('demo-form-status');
+    const demoRequestSuccess = document.getElementById('demo-request-success');
 
     document.querySelectorAll('[data-demo-open]').forEach(trigger => {
       trigger.addEventListener('click', event => {
         if (!demoDialog || typeof demoDialog.showModal !== 'function') return;
         event.preventDefault();
         if (demoForm) demoForm.reset();
+        if (demoForm) demoForm.hidden = false;
+        if (demoRequestSuccess) demoRequestSuccess.hidden = true;
         if (demoFormStatus) demoFormStatus.textContent = '';
         demoDialog.showModal();
       });
     });
+
+    if (demoDialog && typeof demoDialog.showModal === 'function'
+      && new URLSearchParams(window.location.search).get('request-demo') === '1') {
+      demoDialog.showModal();
+    }
 
     if (demoDialog) {
       demoDialog.querySelector('.demo-dialog-close')?.addEventListener('click', () => demoDialog.close());
@@ -4723,7 +4773,7 @@
         demoFormStatus.textContent = 'Sending your request securely…';
         demoFormStatus.style.color = '#5e6b80';
 
-        fetch('https://formsubmit.co/ajax/info@waredigitise.com', {
+        fetch('https://formsubmit.co/ajax/66d739e1a5cb8eb3b20eff71fe0a2726', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -4740,12 +4790,17 @@
           })
           .then(() => {
             demoForm.reset();
-            demoFormStatus.textContent = 'Thank you. Your demo request has been sent to our team.';
-            demoFormStatus.style.color = '#087653';
+            demoForm.hidden = true;
+            if (demoRequestSuccess) demoRequestSuccess.hidden = false;
           })
           .catch(error => {
             console.error('Demo request could not be sent:', error);
-            demoFormStatus.textContent = 'We couldn’t send your request right now. Please email info@waredigitise.com and we’ll help you.';
+            const serviceMessage = String(error?.message || '');
+            if (/activat/i.test(serviceMessage)) {
+              demoFormStatus.textContent = 'This form needs one-time activation. Check info@waredigitise.com (including spam) for FormSubmit’s activation email, click its activation link, then submit your request again.';
+            } else {
+              demoFormStatus.textContent = 'We couldn’t send your request right now. Your details are still here; please try again or email info@waredigitise.com.';
+            }
             demoFormStatus.style.color = '#a33b47';
           })
           .finally(() => {
