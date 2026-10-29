@@ -3741,7 +3741,10 @@
         <p class="demo-form-status" id="demo-form-status" role="status" aria-live="polite"></p>
         <p class="demo-privacy">Having trouble? <a href="mailto:info@waredigitise.com?subject=Request%20a%20demo">Email us directly</a>.</p>
       </form>
-      <div class="demo-form-status" id="demo-form-success" role="status" aria-live="polite" style="display:none">Thank you. Your demo request has been received, and our team will be in touch.</div>
+      <div class="demo-form-status" id="demo-form-success" role="status" aria-live="polite" style="display:none">
+        <p>Thank you. Your demo request has been received, and our team will be in touch.</p>
+        <button class="btn btn-primary demo-form-submit" id="demo-submit-another" type="button">Send another request</button>
+      </div>
       <div class="demo-form-status" id="demo-form-error" role="alert" aria-live="assertive" style="display:none">We couldn’t send your request just now. Your details are still here; please try again or email info@waredigitise.com.</div>
     </div>
   </dialog>
@@ -4696,23 +4699,41 @@
     const demoDialog = document.getElementById('demo-request-dialog');
     const demoForm = document.getElementById('demo-request-form');
     const demoFormStatus = document.getElementById('demo-form-status');
+    const resetDemoRequest = (focusForm = false) => {
+      if (!demoForm) return;
+      demoForm.hidden = false;
+      demoForm.classList.remove('hidden');
+      demoForm.style.removeProperty('display');
+      demoForm.reset();
+
+      const submitButton = demoForm.querySelector('[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Request my demo';
+      }
+
+      if (demoFormStatus) {
+        demoFormStatus.textContent = '';
+        delete demoFormStatus.dataset.state;
+      }
+      ['demo-form-success', 'demo-form-error'].forEach(id => {
+        const message = document.getElementById(id);
+        if (message) message.style.display = 'none';
+      });
+
+      if (focusForm) demoForm.querySelector('[name="name"]')?.focus();
+    };
 
     document.querySelectorAll('[data-demo-open]').forEach(trigger => {
       trigger.addEventListener('click', event => {
         if (!demoDialog || typeof demoDialog.showModal !== 'function') return;
         event.preventDefault();
-        if (demoForm) demoForm.reset();
-        if (demoFormStatus) {
-          demoFormStatus.textContent = '';
-          delete demoFormStatus.dataset.state;
-        }
-        ['demo-form-success', 'demo-form-error'].forEach(id => {
-          const message = document.getElementById(id);
-          if (message) message.style.display = 'none';
-        });
+        resetDemoRequest();
         demoDialog.showModal();
       });
     });
+
+    document.getElementById('demo-submit-another')?.addEventListener('click', () => resetDemoRequest(true));
 
     const requestDemoState = new URLSearchParams(window.location.search).get('request-demo');
     if (demoDialog && typeof demoDialog.showModal === 'function' && requestDemoState === '1') {
